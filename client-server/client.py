@@ -57,8 +57,8 @@ def main():
 	# validate the number of arguments and eventually print error message and exit with error
 	# verify type of of arguments and eventually print error message and exit with error
 
-	port = int (sys.argv[1])#rever
-	hostname = sys.argv[2]#rever
+	port = ...
+	hostname = ...
 
 	client_sock = socket.socket (socket.AF_INET, socket.SOCK_STREAM)
 	client_sock.connect ((hostname, port))
