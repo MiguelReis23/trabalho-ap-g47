@@ -24,7 +24,7 @@ def decrypt_intvalue (cipherkey, data):
 
 # verify if response from server is valid or is an error message and act accordingly
 def validate_response (client_sock, response):
-    
+
 	return None
 
 
@@ -50,15 +50,16 @@ def quit_action (client_sock, attempts):
 # Suporte da execução do cliente
 #
 def run_client (client_sock, client_id):
+    
 	return None
 	
 
 def main():
 	# validate the number of arguments and eventually print error message and exit with error
 	# verify type of of arguments and eventually print error message and exit with error
-
-	port = ...
-	hostname = ...
+	
+	port = int(sys.argv[1])
+	hostname = sys.argv[2]
 
 	client_sock = socket.socket (socket.AF_INET, socket.SOCK_STREAM)
 	client_sock.connect ((hostname, port))
