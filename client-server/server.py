@@ -117,7 +117,9 @@ def new_client(client_sock, request):
 	if client_id in users: return {"op": "START", "status": False,"error":"client_id already exists"}
 	
 	users[client_id]= {"socket": client_sock, "cipher": cipherkey, "numbers": []}
+	print("SERVER - Client {} conected".format(client_id))
 	return {"op": "START", "status": True}
+
 	   
 		
 
@@ -146,6 +148,7 @@ def quit_client(client_sock, request):
   if not client_id: return {"op": "QUIT", "status": False,"error":"client_id not found"}
   
   del users[client_id]
+  print("SERVER - Client {} gave up on connection".format(client_id))
   return {"op": "QUIT", "status": True}
 
 # obtain the client_id from his socket
@@ -187,10 +190,10 @@ def number_client(client_sock, request):
 	if not "number" in request: return {"op": "NUMBER", "status": False,"error":"number not found"}
 	number= request["number"]
 	number= decrypt_intvalue(client_id, number)
-	
 	users[client_id]["numbers"].append(number)
+	print("SERVER - Client {} sent number {}".format(client_id, number))
 	return {"op": "NUMBER", "status": True}
-	return None
+	
 # obtain the client_id from his socket
 # verify the appropriate conditions for executing this operation
 # return response message with or without error message
@@ -215,6 +218,9 @@ def stop_client(client_sock):
 	update_file(client_id, result)
 	
 	del users[client_id]
+	print("SERVER - Client {} disconnected.".format(client_id))
+	print("SERVER - Results: {} numbers sent, minimum: {}, maximum: {}".format(len(numbers), minNumber, maxNumber))
+	
 	return {"op": "STOP", "status": True, "minimum": minNumber, "maximum": maxNumber}
 
 # obtain the client_id from his socket
@@ -228,13 +234,13 @@ def main():
 	# validate the number of arguments and eventually print error message and exit with error
 	# verify type of of arguments and eventually print error message and exit with error
 	if len(sys.argv) < 2:
-		print("Usage: python3 {} <port>".format(sys.argv[0]))
+		print("ERROR - Usage: python3 {} <port>".format(sys.argv[0]))
 		sys.exit(1)
 	
 	port = sys.argv[1]
 	
 	if not port.isdigit():
-		print("Port must be a number")
+		print("SERVER - Port must be a number")
 		sys.exit(1)
 	else:
 		port=int(port)
@@ -246,7 +252,7 @@ def main():
 
 	clients = []
 	create_file()
-	print("Waiting for connections...")
+	print("SERVER - Waiting for connections at port {}".format(port))
 	while True:
 		
 		try:
