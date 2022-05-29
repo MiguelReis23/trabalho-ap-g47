@@ -1,12 +1,10 @@
 #!/usr/bin/python3
 
-import numbers
 import os
 import sys
 import socket
 import json
 import base64
-from urllib import response
 
 from common_comm import send_dict, recv_dict, sendrecv_dict
 
