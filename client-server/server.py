@@ -30,9 +30,9 @@ def encrypt_intvalue(client_id, data):
 	if cipherkey is None or not cipherkey: return data
 	
 	cipher = AES.new(cipherkey, AES.MODE_ECB)
-	dataenctypted= cipher.encrypt(bytes("%16d"%(data), "utf-8"))
-	dataenctyptedtosend= base64.b64encode(dataenctypted)
-	return str(dataenctyptedtosend, "utf-8")
+	dataencrypted= cipher.encrypt(bytes("%16d"%(data), "utf8"))
+	dataencryptedtosend= base64.b64encode(dataencrypted)
+	return str(dataencryptedtosend, "utf8")
 
 
 # Função para desencriptar valores recebidos em formato json com codificação base64
@@ -42,10 +42,10 @@ def decrypt_intvalue(client_id, data):
 	if cipherkey is None or not cipherkey: return data
 	
 	cipher = AES.new(cipherkey, AES.MODE_ECB)
-	datadecoded= base64.b64encode(data)
-	datadecrypted= cipher.decrypt(bytes(datadecoded))
+	datadecoded= base64.b64decode(data)
+	datadecrypted= cipher.decrypt(datadecoded)
 	
-	return int(str(datadecrypted, "utf-8"))
+	return int(str(datadecrypted, "utf8"))
 
 
 # Incomming message structure:
@@ -104,12 +104,12 @@ def new_msg(client_sock):
 def new_client(client_sock, request):
 	if not "client_id" in request:
 		return {"op": "START", "status": False,"error":"client_id not found"}
-	# if not "cipher" in request:
-	# 	return {"op": "START", "status": False,"error":"cipher not found"}
+	if not "cipher" in request:
+		return {"op": "START", "status": False,"error":"cipher not found"}
 	
 	client_id= request["client_id"]
-	# cipher= request["cipher"]
-	cipher = None
+	cipher= request["cipher"]
+	
 	
 	if  cipher: cipherkey = base64.b64decode(cipher)
 	else: cipherkey= None

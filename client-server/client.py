@@ -18,9 +18,9 @@ def encrypt_intvalue (cipherkey, data):
 	if cipherkey is None:
 		return data
 	cipher = AES.new(cipherkey, AES.MODE_ECB)
-	dataencrypted= cipher.encrypt(bytes("%16d"%(data), "utf-8"))
+	dataencrypted= cipher.encrypt(bytes("%16d"%(data), "utf8"))
 	dataenctyptedtosend= base64.b64encode(dataencrypted)
-	return str(dataenctyptedtosend, "utf-8")
+	return str(dataenctyptedtosend, "utf8")
 	
 
 
@@ -30,9 +30,9 @@ def decrypt_intvalue (cipherkey, data):
 	if cipherkey is None:
 		return data
 	cipher= AES.new(cipherkey, AES.MODE_ECB)
-	datadecoded= base64.b64encode(data)
-	datadecrypted= cipher.decrypt(bytes(datadecoded))
-	return int(str(datadecrypted, "utf-8"))
+	datadecoded= base64.b64decode(data)
+	datadecrypted= cipher.decrypt(datadecoded)
+	return int(str(datadecrypted, "utf8"))
 
 
 # verify if response from server is valid or is an error message and act accordingly
@@ -77,7 +77,7 @@ def run_client (client_sock, client_id):
 	numbers=[]	
 	
 	encrypt= input("CLIENT - Do you want to encrypt the numbers? (y/n): ")
-	while encrypt.upper() != "Y" and encrypt != "N":
+	while encrypt.upper() != "Y" and encrypt.upper() != "N":
 		print ("ERROR -  Invalid option")
 		encrypt= input("CLIENT - Do you want to encrypt the numbers? (y/n): ")
 	if encrypt.upper() == "Y" :
@@ -90,7 +90,7 @@ def run_client (client_sock, client_id):
 	print ("Operation START successfully executed" )
  
 	while op.upper() != "QUIT" or op!= "STOP":
-		op= input("Enter operation(QUIT, STOP) or number: ")
+		op= input("CLIENT - Enter operation(QUIT, STOP) or number: ")
 		
 		if op.upper() == "STOP":
 			response= sendrecv_dict (client_sock, {"op": "STOP"})
@@ -110,7 +110,7 @@ def run_client (client_sock, client_id):
 				print ("ERROR - Invalid number or operation")
 				continue
 				
-			response= sendrecv_dict (client_sock, {"op": "NUMBER", "number": encrypt_intvalue(cipherkey, int(number))})
+			response= sendrecv_dict (client_sock, {"op": "NUMBER", "number": encrypt_intvalue(cipherkey,number)})
 			validate_response (client_sock, response)
 			print ("CLIENT - Number {} sent".format(number))
 
