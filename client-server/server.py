@@ -241,7 +241,7 @@ def main():
 	# verify type of of arguments and eventually print error message and exit with error
 	
  	#check if the user has entered the correct number of arguments
-	if len(sys.argv) < 2:
+	if len(sys.argv) != 2:
 		print("ERROR - Usage: python3 {} <port>".format(sys.argv[0]))
 		sys.exit(1)
 	
@@ -249,14 +249,14 @@ def main():
 	
 	#check if the port is a number
 	if not port.isdigit():
-		print("SERVER - Port must be a number")
+		print("ERROR - Port must be a number")
 		sys.exit(1)
 	else:
 		port=int(port)
 	
  	#check if the port is in the correct range
 	if port<1024 or port>65535:
-		print("SERVER - Port must be between 1024 and 65535")
+		print("ERROR - Port must be between 1024 and 65535")
 		sys.exit(1)
 
 	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #create the server socket

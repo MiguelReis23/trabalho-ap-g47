@@ -119,15 +119,19 @@ def run_client (client_sock, client_id):
 def main():
 	# validate the number of arguments and eventually print error message and exit with error
 	# verify type of of arguments and eventually print error message and exit with error
-	if len(sys.argv) <3 or len(sys.argv) > 4: #check if number of arguments is valid
-		print ("ERROR - Usage: python3 {} <client_id> <port> <host>".format(sys.argv[0])) #print error message and correct usage
+	if len(sys.argv) < 3 or len(sys.argv) > 4: #check if number of arguments is valid
+		print ("ERROR - Usage: python3 {} <client_id> <port> [host]".format(sys.argv[0])) #print error message and correct usage
 		sys.exit (1) #exit with error
 	if not sys.argv[2].isdigit(): #check if port is a number
 		print ("ERROR - Invalid port") #print error message
 		sys.exit (2) #exit with error
+	else: port = int(sys.argv[2]) #convert port to int
+ 
+	if port <1024 or port > 65535: #check if port is valid
+		print("ERROR - Invalid port") #print error message
+		sys.exit (2) #exit with error
 	
 	client_id = sys.argv[1] #get client id from arguments
-	port = int(sys.argv[2]) #get port from arguments
 	hostname = sys.argv[3] if len(sys.argv) > 3 else "localhost" #get hostname from arguments if exists, otherwise use localhost
 
 	# create a socket and connect to the server
